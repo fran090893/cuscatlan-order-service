@@ -8,6 +8,9 @@ import org.springframework.web.bind.annotation.RestController;
 import com.cuscatlan.orderservice.application.dtos.CreateOrderRequest;
 import com.cuscatlan.orderservice.application.services.OrderService;
 import com.cuscatlan.orderservice.domain.entity.Order;
+import org.springframework.web.bind.annotation.GetMapping;
+import org.springframework.web.bind.annotation.RequestParam;
+
 
 
 @RestController
@@ -24,5 +27,11 @@ public class OrdersController {
     public Order createOrder(@RequestBody CreateOrderRequest request) {
         return orderService.createOrder(request.getCustomerId(), request.getShippingAddress(), request.getProducts());
     }
+
+    @GetMapping("/GetOrderById")
+    public Order getOrderById(@RequestParam Long id) {
+        return orderService.getOrderById(id);
+    }
+    
     
 }

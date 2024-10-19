@@ -9,8 +9,8 @@ import jakarta.persistence.ManyToOne;
 import jakarta.persistence.Table;
 
 @Entity
-@Table(name = "OrderProduct")
-public class OrderProduct {
+@Table(name = "DetailOrder")
+public class DetailOrder {
     
     @Id
     @GeneratedValue(strategy = GenerationType.IDENTITY)
@@ -24,9 +24,9 @@ public class OrderProduct {
     @JoinColumn(name = "order_id")
     private Order order;
 
-    public OrderProduct() {}
+    public DetailOrder() {}
 
-    public OrderProduct(Long productId, Integer quantity, Double price) {
+    public DetailOrder(Long productId, Integer quantity, Double price) {
         this.productId = productId;
         this.quantity = quantity;
         this.price = price;
@@ -43,6 +43,9 @@ public class OrderProduct {
     }
     public Double getPrice(){
         return price;
+    }
+    public void setOrder(Order order) {
+        this.order = order;
     }
 
 }

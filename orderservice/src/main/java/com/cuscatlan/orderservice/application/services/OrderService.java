@@ -9,7 +9,7 @@ import org.springframework.stereotype.Service;
 import com.cuscatlan.orderservice.application.dtos.OrderProductRequestDTO;
 import com.cuscatlan.orderservice.domain.dtos.ProductDTO;
 import com.cuscatlan.orderservice.domain.entity.Order;
-import com.cuscatlan.orderservice.domain.entity.OrderProduct;
+import com.cuscatlan.orderservice.domain.entity.DetailOrder;
 import com.cuscatlan.orderservice.domain.repository.IOrderRepository;
 import com.cuscatlan.orderservice.infrastructure.integrations.ProductIntegration;
 
@@ -25,7 +25,7 @@ public class OrderService {
         this.productIntegration = productIntegration;
     }
 
-    public Order createOrder(String customerId, String shippingAddress, List<OrderProductRequestDTO> productRequests) {
+    public Order createOrder(Long customerId, String shippingAddress, List<OrderProductRequestDTO> productRequests) {
         // get the product ids from the request
         List<Long> productIds = productRequests.stream()
             .map(OrderProductRequestDTO::getProductId)
@@ -39,7 +39,7 @@ public class OrderService {
         List<ProductDTO> products = productIntegration.getProductsByIds(idsString);
 
         // Create new List<OrderProduct> to add to Order
-        List<OrderProduct> orderProducts = new ArrayList<>();
+        List<DetailOrder> orderProducts = new ArrayList<>();
         for (ProductDTO productDTO : products) {
             // Obtener la cantidad del producto a partir de los requestDTOs
             OrderProductRequestDTO requestDTO = productRequests.stream()
@@ -50,17 +50,23 @@ public class OrderService {
             int quantity = requestDTO.getQuantity();
 
             // Crear una instancia de OrderProduct para la orden
-            OrderProduct orderProduct = new OrderProduct(productDTO.getId(), quantity, productDTO.getPrice());
+            DetailOrder orderProduct = new DetailOrder(productDTO.getId(), quantity, productDTO.getPrice());
+
             //add orderProduct to List<OrderProduct>
             orderProducts.add(orderProduct);
         }
 
         // Create order
         Order order = new Order(customerId, shippingAddress, orderProducts);
-        
+        orderProducts.forEach(orderProduct -> orderProduct.setOrder(order));
         // save order
-        order = orderRepository.save(order);
+        orderRepository.save(order);
 
         return order;
+    }
+
+    public Order getOrderById(Long id){
+        return orderRepository.findById(id)
+            .orElseThrow(() -> new RuntimeException("Order not found with id: " + id));
     }
 }

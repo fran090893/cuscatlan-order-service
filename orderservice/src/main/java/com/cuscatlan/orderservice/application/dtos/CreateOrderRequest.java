@@ -4,11 +4,11 @@ import java.util.List;
 
 public class CreateOrderRequest {
     private List<OrderProductRequestDTO> products;
-    private String customerId;
+    private Long customerId;
     private String shippingAddress;
 
     // Constructors
-    public CreateOrderRequest(String customerId, String shippingAddress, List<OrderProductRequestDTO> productRequests) {
+    public CreateOrderRequest(Long customerId, String shippingAddress, List<OrderProductRequestDTO> productRequests) {
         this.customerId = customerId;
         this.shippingAddress = shippingAddress;
         this.products = productRequests;
@@ -23,11 +23,11 @@ public class CreateOrderRequest {
         this.products = products;
     }
 
-    public String getCustomerId() {
+    public Long getCustomerId() {
         return customerId;
     }
 
-    public void setCustomerId(String customerId) {
+    public void setCustomerId(Long customerId) {
         this.customerId = customerId;
     }
 
