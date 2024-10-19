@@ -20,18 +20,18 @@ public class Order {
     @GeneratedValue(strategy = GenerationType.IDENTITY)
     private Long id;
 
-    private String customerId;
+    private Long customerId;
     private String shippingAddress;
     private Double total;
     private String status;
     private LocalDateTime createdAt;
 
     @OneToMany(mappedBy = "order", cascade = CascadeType.ALL, fetch = FetchType.LAZY)
-    private List<OrderProduct> products;
+    private List<DetailOrder> products;
 
     public Order() {}
 
-    public Order(String pCustomerId, String pShippingAddress, List<OrderProduct> pProducts) {
+    public Order(Long pCustomerId, String pShippingAddress, List<DetailOrder> pProducts) {
         this.createdAt = LocalDateTime.now();
         customerId = pCustomerId;
         products = pProducts;
@@ -48,7 +48,7 @@ public class Order {
         return id;
     }
 
-    public String getCustomerId(){
+    public Long getCustomerId(){
         return customerId;
     }
 
@@ -56,7 +56,7 @@ public class Order {
         return total;
     }
 
-    public List<OrderProduct> getProducts(){
+    public List<DetailOrder> getProducts(){
         return products;
     }
 
