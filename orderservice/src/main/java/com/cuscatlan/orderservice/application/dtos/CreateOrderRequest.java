@@ -2,9 +2,16 @@ package com.cuscatlan.orderservice.application.dtos;
 
 import java.util.List;
 
+import jakarta.validation.constraints.NotBlank;
+import jakarta.validation.constraints.NotNull;
+
 public class CreateOrderRequest {
+    @NotNull(message = "products is required")
     private List<OrderProductRequestDTO> products;
+    @NotNull(message = "customerId is required")
     private Long customerId;
+    @NotNull(message = "shippingAddress is required")
+    @NotBlank(message = "shippingAddress is required")
     private String shippingAddress;
 
     // Constructors
